@@ -1,8 +1,8 @@
 {
-  "name": "Next.JS Progressive Web App",
-  "short_name": "Next PWA",
-  "theme_color": "#ffffff",
-  "background_color": "#004740",
+  "name": "QR MXnLabs",
+  "short_name": "QR Test",
+  "theme_color": "#062f58",
+  "background_color": "#2a66a2",
   "display": "fullscreen",
   "orientation": "portrait",
   "scope": "/",
