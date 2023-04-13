@@ -73,7 +73,7 @@ export default function Home() {
           Descargar QR
         </button>
 
-        <div className="mt-10">
+        <div className="mt-10 mx-2">
           {coords ? (
             <p>
               Tus coordenadas son: {coords.lat}, {coords.lng}
