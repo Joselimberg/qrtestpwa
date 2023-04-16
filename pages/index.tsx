@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 
 import { QRLayout } from "../components/layouts/QRLayout";
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
 
 export default function Home() {
   const router = useRouter();
@@ -20,3 +22,21 @@ export default function Home() {
     </QRLayout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+  // console.log({session});
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/generator",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
