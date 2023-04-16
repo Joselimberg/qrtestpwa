@@ -47,6 +47,7 @@ next-env.d.ts
 /public/fallback-*.js
 
 # local env files
+.env
 .env.local
 .env.development.local
 .env.test.local
