@@ -18,6 +18,7 @@ export default function GeneratorPage() {
   console.log(data);
 
   const [value, setValue] = useState("");
+  const [message, setMessage] = useState("");
   const qrRef = useRef(null);
 
   const downloadQR = () => {
@@ -73,29 +74,7 @@ export default function GeneratorPage() {
         </div>
       </div>
       <div className="flex flex-col items-center pt-5">
-        <label className="text-3xl pb-3">Ingresa un texto</label>
-        <input
-          className="text-2xl text-black w-60 md:w-2/4 shadow-lg"
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <button
-          className="mt-11 bg-sky-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
-          onClick={downloadQR}
-        >
-          Descargar QR
-        </button>
-
-        <button
-          className="mt-11 bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded"
-          onClick={() => {
-            signOut();
-            router.push("./");
-          }}
-        >
-          Salir
-        </button>
-
-        <div className="mt-10 mx-2">
+        <div className="mt-1 mx-2 w-4/6 text-center">
           {coords ? (
             <p>
               Tus coordenadas son: {coords.lat}, {coords.lng}
@@ -104,6 +83,43 @@ export default function GeneratorPage() {
             <p>Cargando...</p>
           )}
         </div>
+        <label className="text-3xl pb-3">Ingresa un texto</label>
+        <input
+          className="text-2xl text-black w-60 md:w-2/4 shadow-lg"
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <div className="flex justify-around w-3/4">
+          <button
+            className="mt-5 bg-sky-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+            onClick={downloadQR}
+          >
+            Descargar QR
+          </button>
+
+          <button
+            className="mt-5 bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded"
+            onClick={() => {
+              signOut();
+              router.push("./");
+            }}
+          >
+            Salir
+          </button>
+        </div>
+      </div>
+      <div className="flex flex-col items-center h-64 mt-10 border-t border-dashed">
+        <label className="text-3xl pb-3 mt-5">Deja un mensaje</label>
+        <textarea
+          className="text-black w-60 md:w-1/3 shadow-lg h-20"
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+        />
+        <button
+          className="mt-2 bg-sky-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+          onClick={() => {}}
+        >
+          Enviar
+        </button>
       </div>
     </QRLayout>
   );
