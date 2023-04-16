@@ -5,6 +5,7 @@ import html2canvas from "html2canvas";
 import { saveAs } from "file-saver";
 import { QRLayout } from "../components/layouts/QRLayout";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 interface Coords {
   lat: number;
@@ -12,9 +13,10 @@ interface Coords {
 }
 
 export default function GeneratorPage() {
+  const router = useRouter();
   const { data } = useSession();
   console.log(data);
-  
+
   const [value, setValue] = useState("");
   const qrRef = useRef(null);
 
@@ -47,7 +49,12 @@ export default function GeneratorPage() {
   return (
     <QRLayout pageDescription="Generador de QR" title="Generador QR">
       <div className="flex justify-center mx-28 mb-6">
-        <h2 className="text-xl">Bienvenido <span className="text-yellow-300">{(data as any)?.user.name}</span> ---- <span className="text-yellow-300">{(data as any)?.user.email}</span></h2>
+        <h2 className="text-xl">
+          Bienvenido{" "}
+          <span className="text-yellow-300">{(data as any)?.user.name}</span>{" "}
+          ----{" "}
+          <span className="text-yellow-300">{(data as any)?.user.email}</span>
+        </h2>
       </div>
       <div className="flex justify-center">
         <div className="flex flex-col items-center bg-sky-700" ref={qrRef}>
@@ -80,7 +87,10 @@ export default function GeneratorPage() {
 
         <button
           className="mt-11 bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded"
-          onClick={()=>{signOut()}}
+          onClick={() => {
+            signOut();
+            router.push("./");
+          }}
         >
           Salir
         </button>
