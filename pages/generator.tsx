@@ -49,8 +49,8 @@ export default function GeneratorPage() {
 
   return (
     <QRLayout pageDescription="Generador de QR" title="Generador QR">
-      <div className="flex justify-center mx-28 mb-6">
-        <h2 className="text-xl">
+      <div className="flex justify-center mx-28 mb-2">
+        <h2 className="text-lg">
           Bienvenido{" "}
           <span className="text-yellow-300">{(data as any)?.user.name}</span>{" "}
           ----{" "}
@@ -74,7 +74,7 @@ export default function GeneratorPage() {
         </div>
       </div>
       <div className="flex flex-col items-center pt-5">
-        <div className="mt-1 mx-2 w-4/6 text-center">
+        <div className=" mx-2 w-4/6 text-center">
           {coords ? (
             <p>
               Tus coordenadas son: {coords.lat}, {coords.lng}
@@ -88,16 +88,16 @@ export default function GeneratorPage() {
           className="text-2xl text-black w-60 md:w-2/4 shadow-lg"
           onChange={(e) => setValue(e.target.value)}
         />
-        <div className="flex justify-around w-3/4">
+        <div className="flex justify-around w-3/4 mt-2">
           <button
-            className="mt-5 bg-sky-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+            className=" bg-sky-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
             onClick={downloadQR}
           >
             Descargar QR
           </button>
 
           <button
-            className="mt-5 bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded"
+            className=" bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded"
             onClick={() => {
               signOut();
               router.push("./");
@@ -107,11 +107,12 @@ export default function GeneratorPage() {
           </button>
         </div>
       </div>
-      <div className="flex flex-col items-center h-64 mt-10 border-t border-dashed">
-        <label className="text-3xl pb-3 mt-5">Deja un mensaje</label>
+      <div className="flex flex-col items-center h-64 mt-1">
+        <label className="text-2xl pb-3 mt-2">Deja un mensaje</label>
         <textarea
           className="text-black w-60 md:w-1/3 shadow-lg h-20"
           value={message}
+          maxLength={80}
           onChange={(event) => setMessage(event.target.value)}
         />
         <button
