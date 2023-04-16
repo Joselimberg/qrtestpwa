@@ -107,7 +107,7 @@ export default function GeneratorPage() {
           </button>
         </div>
       </div>
-      <div className="flex flex-col items-center h-64 mt-1">
+      <div className="flex flex-col items-center h-50 mt-1">
         <label className="text-2xl pb-3 mt-2">Deja un mensaje</label>
         <textarea
           className="text-black w-60 md:w-1/3 shadow-lg h-20"
