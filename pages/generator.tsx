@@ -113,7 +113,7 @@ export default function GeneratorPage() {
 
           <button
             className=" bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
-            onClick={() => createNotification('¡Hola mundo!')}
+            onClick={() => createNotification('¡Hola mundo!',{silent: false, body:"Soy el cuerpo de la notificacion"})}
           >
             Notifiaciones
           </button>
