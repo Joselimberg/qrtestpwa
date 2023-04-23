@@ -56,7 +56,7 @@ export default function GeneratorPage() {
 
   const createNotification = (title: string, options?: NotificationOptions) => {
     alert("notificando");
-    setMensaje("Generando notificación ");
+    setMensaje(Notification.permission);
     if (Notification.permission === 'granted') {
       // Crear y mostrar la notificación push
       const notification = new Notification(title, options);
