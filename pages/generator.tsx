@@ -57,7 +57,7 @@ export default function GeneratorPage() {
         reg.pushManager.getSubscription().then((sub) => {
           if (
             sub &&
-            !!(
+            !(
               typeof sub.expirationTime !== "undefined" &&
               Date.now() > sub.expirationTime! - 5 * 60 * 1000
             )
