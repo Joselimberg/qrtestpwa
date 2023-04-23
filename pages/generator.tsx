@@ -12,21 +12,6 @@ interface Coords {
   lng: number;
 }
 
-const notifyUser = async (notificationText = "Test de notificacion") => {
-  if (!("Notification" in window)) {
-    alert("El navegador no soporta notificaciones");
-  } else if (Notification.permission === "granted") {
-    const notification = new Notification(notificationText);
-  } else if (Notification.permission === "denied") {
-    await Notification.requestPermission().then((permission) => {
-      if (permission === "granted") {
-        const notification = new Notification(notificationText);
-        console.log("aasdasdasd");
-      }
-    });
-  }
-};
-
 export default function GeneratorPage() {
   const router = useRouter();
   const { data } = useSession();
@@ -61,6 +46,21 @@ export default function GeneratorPage() {
       );
     }
   }, []);
+
+  const askForPermission = async () => {
+    const result = await Notification.requestPermission();
+    return result;
+  };
+
+  const createNotification = (title: string, options?: NotificationOptions) => {
+    if (Notification.permission === 'granted') {
+      // Crear y mostrar la notificación push
+      const notification = new Notification(title, options);
+    } else {
+      // Pedir permiso para enviar notificaciones push
+      askForPermission();
+    }
+  };
 
   return (
     <QRLayout pageDescription="Generador de QR" title="Generador QR">
@@ -103,7 +103,7 @@ export default function GeneratorPage() {
           className="text-2xl text-black w-60 md:w-2/4 shadow-lg"
           onChange={(e) => setValue(e.target.value)}
         />
-        <div className="flex justify-around w-3/4 mt-2">
+        <div className="flex justify-around w-3/4 mt-2 px-3">
           <button
             className=" bg-sky-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
             onClick={downloadQR}
@@ -112,8 +112,8 @@ export default function GeneratorPage() {
           </button>
 
           <button
-            className=" bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded"
-            onClick={() => notifyUser("asdasdasd")}
+            className=" bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
+            onClick={() => createNotification('¡Hola mundo!')}
           >
             Notifiaciones
           </button>
