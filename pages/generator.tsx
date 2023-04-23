@@ -52,11 +52,14 @@ export default function GeneratorPage() {
     return result;
   };
 
+  const [mensaje, setMensaje] = useState("");
+
   const createNotification = (title: string, options?: NotificationOptions) => {
     if (Notification.permission === 'granted') {
       // Crear y mostrar la notificación push
       const notification = new Notification(title, options);
       alert("notificando");
+      setMensaje("Generando notificación ");
     } else {
       // Pedir permiso para enviar notificaciones push
       askForPermission();
@@ -69,7 +72,7 @@ export default function GeneratorPage() {
         <h2 className="text-lg">
           Bienvenido{" "}
           <span className="text-yellow-300">{(data as any)?.user.name}</span>{" "}
-          ----{" "}
+          ----{" "} {mensaje}
           <span className="text-yellow-300">{(data as any)?.user.email}</span>
         </h2>
       </div>
