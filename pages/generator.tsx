@@ -6,6 +6,7 @@ import { saveAs } from "file-saver";
 import { QRLayout } from "../components/layouts/QRLayout";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import PushNotificationsButton from "../components/PushNotificationsButton";
 
 interface Coords {
   lat: number;
@@ -116,12 +117,15 @@ export default function GeneratorPage() {
             Descargar QR
           </button>
 
-          <button
+          {/* <button
             className=" bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
             onClick={() => createNotification('¡Hola mundo!',{silent: false, body:"Soy el cuerpo de la notificacion"})}
           >
             Notifiaciones
-          </button>
+          </button> */}
+
+          <PushNotificationsButton />
+
 
           <button
             className=" bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded"
