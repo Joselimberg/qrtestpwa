@@ -13,7 +13,134 @@ interface Coords {
   lng: number;
 }
 
+const base64ToUint8Array = (base64: string): Uint8Array => {
+  const padding = "=".repeat((4 - (base64.length % 4)) % 4);
+  const b64 = (base64 + padding).replace(/-/g, "+").replace(/_/g, "/");
+
+  const rawData = window.atob(b64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+};
+
 export default function GeneratorPage() {
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const [subscription, setSubscription] = useState<PushSubscription | null>(
+    null
+  );
+  const [registration, setRegistration] =
+    useState<ServiceWorkerRegistration | null>(null);
+
+  useEffect(() => {
+    interface CustomWindow extends Window {
+      workbox: typeof import("workbox-window");
+    }
+
+    let tempWindow: unknown = window;
+
+    if (typeof window !== "undefined") {
+      tempWindow = window;
+    }
+
+    const customWindow = (tempWindow as CustomWindow | undefined) ?? null;
+
+    if (
+      typeof window !== "undefined" &&
+      "serviceWorker" in navigator &&
+      customWindow!.workbox !== undefined
+    ) {
+      // run only in browser
+      navigator.serviceWorker.ready.then((reg) => {
+        reg.pushManager.getSubscription().then((sub) => {
+          if (
+            sub &&
+            !(
+              sub.expirationTime &&
+              Date.now() > sub.expirationTime - 5 * 60 * 1000
+            )
+          ) {
+            setSubscription(sub);
+            setIsSubscribed(true);
+          }
+        });
+        setRegistration(reg);
+      });
+    }
+  }, []);
+
+  const subscribeButtonOnClick = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): Promise<void> => {
+    event.preventDefault();
+    if (registration == null) {
+      console.error("service worker registration is null");
+      return;
+    }
+    const sub = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: base64ToUint8Array(
+        process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY!
+      ),
+    });
+    // TODO: you should call your API to save subscription data on server in order to send web push notification from server
+    setSubscription(sub);
+    setIsSubscribed(true);
+    console.log("web push subscribed!");
+    console.log(sub);
+  };
+
+  const unsubscribeButtonOnClick = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): Promise<void> => {
+    event.preventDefault();
+    if (subscription == null) {
+      console.error("web push not subscribed");
+      return;
+    }
+
+    await subscription.unsubscribe();
+    // TODO: you should call your API to delete or invalidate subscription data on server
+    setSubscription(null);
+    setIsSubscribed(false);
+    console.log("web push unsubscribed!");
+  };
+
+  const sendNotificationButtonOnClick = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): Promise<void> => {
+    event.preventDefault();
+    if (subscription == null) {
+      console.error("web push not subscribed");
+      return;
+    }
+
+    await fetch("/api/notification", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        subscription,
+      }),
+    });
+  };
+
+  const base64ToUint8Array = (base64: string): Uint8Array => {
+    const padding = "=".repeat((4 - (base64.length % 4)) % 4);
+    const b64 = (base64 + padding).replace(/-/g, "+").replace(/_/g, "/");
+
+    const rawData = window.atob(b64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  };
+
   const router = useRouter();
   const { data } = useSession();
   console.log(data);
@@ -59,7 +186,7 @@ export default function GeneratorPage() {
     alert("notificando");
     setMensaje(Notification.permission);
     const notification = new Notification(title, options);
-    if (Notification.permission === 'granted') {
+    if (Notification.permission === "granted") {
       // Crear y mostrar la notificación push
       const notification = new Notification(title, options);
     } else {
@@ -74,7 +201,7 @@ export default function GeneratorPage() {
         <h2 className="text-lg">
           Bienvenido{" "}
           <span className="text-yellow-300">{(data as any)?.user.name}</span>{" "}
-          ----{" "} {mensaje}
+          ---- {mensaje}
           <span className="text-yellow-300">{(data as any)?.user.email}</span>
         </h2>
       </div>
@@ -117,15 +244,17 @@ export default function GeneratorPage() {
             Descargar QR
           </button>
 
-          {/* <button
+          <button
             className=" bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
-            onClick={() => createNotification('¡Hola mundo!',{silent: false, body:"Soy el cuerpo de la notificacion"})}
+            onClick={() =>
+              createNotification("¡Hola mundo!", {
+                silent: false,
+                body: "Soy el cuerpo de la notificacion",
+              })
+            }
           >
             Notifiaciones
-          </button> */}
-
-          <PushNotificationsButton />
-
+          </button>
 
           <button
             className=" bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded"
@@ -135,6 +264,31 @@ export default function GeneratorPage() {
             }}
           >
             Salir
+          </button>
+        </div>
+        <div className="flex justify-around w-3/4 mt-2 px-3">
+          <button
+            className=" bg-sky-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+            onClick={subscribeButtonOnClick}
+            disabled={isSubscribed}
+          >
+            Suscribirse
+          </button>
+
+          <button
+            className=" bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
+            onClick={unsubscribeButtonOnClick}
+            disabled={!isSubscribed}
+          >
+            Desuscribirse
+          </button>
+
+          <button
+            className=" bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded"
+            onClick={sendNotificationButtonOnClick}
+            disabled={!isSubscribed}
+          >
+            Enviar notificacion
           </button>
         </div>
       </div>
