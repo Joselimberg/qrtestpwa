@@ -54,18 +54,13 @@ export default function GeneratorPage() {
     ) {
       // run only in browser
       navigator.serviceWorker.ready.then((reg) => {
-        reg.pushManager.getSubscription().then((sub) => {
-          if (
-            sub &&
-            !(
-              sub.expirationTime?.valueOf() &&
-              Date.now() > sub.expirationTime.valueOf() - 5 * 60 * 1000
-            )
-          ) {
+        reg.pushManager
+          .getSubscription()
+          .then((sub: PushSubscription | null) => {
             setSubscription(sub);
             setIsSubscribed(true);
-          }
-        });
+          });
+
         setRegistration(reg);
       });
     }
