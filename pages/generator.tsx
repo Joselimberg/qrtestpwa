@@ -57,9 +57,9 @@ export default function GeneratorPage() {
         reg.pushManager.getSubscription().then((sub) => {
           if (
             sub &&
-            !(
-              sub.expirationTime &&
-              Date.now() > sub.expirationTime - 5 * 60 * 1000
+            !!(
+              typeof sub.expirationTime !== "undefined" &&
+              Date.now() > sub.expirationTime! - 5 * 60 * 1000
             )
           ) {
             setSubscription(sub);
@@ -83,12 +83,12 @@ export default function GeneratorPage() {
       console.error("service worker registration is null");
       return;
     }
-    const sub = await registration.pushManager.subscribe({
+    const sub = (await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: base64ToUint8Array(
         process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY!
       ),
-    }) as CustomPushSubscription;
+    })) as CustomPushSubscription;
     // TODO: you should call your API to save subscription data on server in order to send web push notification from server
     setSubscription(sub);
     setIsSubscribed(true);
