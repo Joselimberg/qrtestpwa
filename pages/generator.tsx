@@ -73,6 +73,7 @@ export default function GeneratorPage() {
   const subscribeButtonOnClick = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): Promise<void> => {
+    console.log(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY!);
     event.preventDefault();
     if (registration == null) {
       console.error("service worker registration is null");
