@@ -3,8 +3,8 @@ import webPush, { SendResult } from 'web-push'
 
 webPush.setVapidDetails(
     'mailto:joselimberg291197@gmail.com',
-    process.env.VAPID_PUBLIC_KEY!,
-    process.env.VAPID_PRIVATE_KEY!
+    'BFSLtdWKhwIhSdPw51c1lQ2xrVa9vm3gHpK-h4uPHhTISNVsfbLrg5fPs5oM6zW5WxnIyOX1VWR9hMXEhksXcVA',
+    '6aI2qj5mN3W8OgtOCwCyMjI9MbGRmOr1WvOAwcn4PAw'
 )
 
 interface Subscription {
