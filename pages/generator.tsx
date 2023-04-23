@@ -71,6 +71,10 @@ export default function GeneratorPage() {
     }
   }, []);
 
+  interface CustomPushSubscription extends PushSubscription {
+    expirationTime: number;
+  }
+
   const subscribeButtonOnClick = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): Promise<void> => {
@@ -84,7 +88,7 @@ export default function GeneratorPage() {
       applicationServerKey: base64ToUint8Array(
         process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY!
       ),
-    });
+    }) as CustomPushSubscription;
     // TODO: you should call your API to save subscription data on server in order to send web push notification from server
     setSubscription(sub);
     setIsSubscribed(true);
