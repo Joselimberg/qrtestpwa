@@ -246,12 +246,9 @@ export default function GeneratorPage() {
 
           <button
             className=" bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
-            onClick={() =>
-              createNotification("¡Hola mundo!", {
-                silent: false,
-                body: "Soy el cuerpo de la notificacion",
-              })
-            }
+            onClick={() => {
+              router.push("./push");
+            }}
           >
             Notifiaciones
           </button>
@@ -264,31 +261,6 @@ export default function GeneratorPage() {
             }}
           >
             Salir
-          </button>
-        </div>
-        <div className="flex justify-around w-3/4 mt-2 px-3">
-          <button
-            className=" bg-sky-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
-            onClick={subscribeButtonOnClick}
-            disabled={isSubscribed}
-          >
-            Suscribirse
-          </button>
-
-          <button
-            className=" bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
-            onClick={unsubscribeButtonOnClick}
-            disabled={!isSubscribed}
-          >
-            Desuscribirse
-          </button>
-
-          <button
-            className=" bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded"
-            onClick={sendNotificationButtonOnClick}
-            disabled={!isSubscribed}
-          >
-            Enviar notificacion
           </button>
         </div>
       </div>
