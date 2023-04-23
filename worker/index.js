@@ -1,39 +1,27 @@
-'use strict'
+self.addEventListener('push', (event) => {
+  console.log('Push received', event)
 
-self.addEventListener('push', function (event) {
-  const data = JSON.parse(event.data.text())
-  event.waitUntil(
-    registration.showNotification(data.title, {
-      body: data.message,
-      icon: '/icons/android-chrome-192x192.png'
-    })
-  )
+  // Obtener la información de la notificación
+  const data = event.data.json()
+
+  // Enviar la información de la notificación al servidor
+  fetch('/api/send-push-notification', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  // Mostrar la notificación al usuario
+  const options = {
+    body: data.body,
+    icon: '/icon.png',
+  }
+  event.waitUntil(self.registration.showNotification(data.title, options))
 })
 
-self.addEventListener('notificationclick', function (event) {
+self.addEventListener('notificationclick', (event) => {
+  console.log('Notification clicked', event)
   event.notification.close()
-  event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (clientList) {
-      if (clientList.length > 0) {
-        let client = clientList[0]
-        for (let i = 0; i < clientList.length; i++) {
-          if (clientList[i].focused) {
-            client = clientList[i]
-          }
-        }
-        return client.focus()
-      }
-      return clients.openWindow('/')
-    })
-  )
 })
-
-// self.addEventListener('pushsubscriptionchange', function(event) {
-//   event.waitUntil(
-//       Promise.all([
-//           Promise.resolve(event.oldSubscription ? deleteSubscription(event.oldSubscription) : true),
-//           Promise.resolve(event.newSubscription ? event.newSubscription : subscribePush(registration))
-//               .then(function(sub) { return saveSubscription(sub) })
-//       ])
-//   )
-// })
