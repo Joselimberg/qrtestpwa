@@ -58,8 +58,8 @@ export default function GeneratorPage() {
           if (
             sub &&
             !(
-              typeof sub.expirationTime !== "undefined" &&
-              Date.now() > sub.expirationTime! - 5 * 60 * 1000
+              sub.expirationTime?.valueOf() &&
+              Date.now() > sub.expirationTime.valueOf() - 5 * 60 * 1000
             )
           ) {
             setSubscription(sub);
