@@ -12,6 +12,21 @@ interface Coords {
   lng: number;
 }
 
+const notifyUser = async (notificationText = "Test de notificacion") => {
+  if (!("Notification" in window)) {
+    alert("El navegador no soporta notificaciones");
+  } else if (Notification.permission === "granted") {
+    const notification = new Notification(notificationText);
+  } else if (Notification.permission === "denied") {
+    await Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        const notification = new Notification(notificationText);
+        console.log("aasdasdasd");
+      }
+    });
+  }
+};
+
 export default function GeneratorPage() {
   const router = useRouter();
   const { data } = useSession();
@@ -58,14 +73,14 @@ export default function GeneratorPage() {
         </h2>
       </div>
       <div className="flex justify-center">
-        <div className="flex flex-col items-center bg-sky-700" ref={qrRef}>
+        <div className="flex flex-col items-center bg-white" ref={qrRef}>
           {/* <Image src={'/mxnlabs.png'} width={100} height={100}/> */}
-          <h1 className="text-2xl pb-3">Mxnlabs</h1>
-          <div className="border border-white-600 rounded shadow-lg">
+          <h1 className="text-2xl pb-3 text-black">Mxnlabs</h1>
+          <div className="rounded shadow-lg">
             <QRCode
-              size={200}
-              bgColor="#2a66a2"
-              fgColor="white"
+              size={256}
+              bgColor="#FFFFFF"
+              fgColor="#1b4f72"
               style={{ height: "auto", maxWidth: "100%", width: "100%" }}
               value={value}
               viewBox={`0 0 256 256`}
@@ -94,6 +109,13 @@ export default function GeneratorPage() {
             onClick={downloadQR}
           >
             Descargar QR
+          </button>
+
+          <button
+            className=" bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded"
+            onClick={() => notifyUser("asdasdasd")}
+          >
+            Notifiaciones
           </button>
 
           <button
