@@ -33,7 +33,7 @@ export default function QRCodeReader() {
                 setText((result as any).text);
                 setShowButtonR(true);
                 
-                if(localStorage.getItem('register') === null){
+                if(localStorage.getItem('register') === null && text !== "Escaneando..."){
                   console.log("no existe");
                   console.log(localStorage.getItem('register'));
                   const register: Register[] = []
