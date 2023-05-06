@@ -15,6 +15,7 @@ const history = () => {
     if (registrosJSON) {
       const registros: Register[] = JSON.parse(registrosJSON);
       setRegistros(registros);
+      console.log(registros);
     }
   }, []);
 
