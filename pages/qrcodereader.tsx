@@ -8,24 +8,27 @@ export default function QRCodeReader() {
   return (
     <div>
       <h1>Lector de QR</h1>
-      <QrReader
-        onResult={(result, error) => {
-          if (!!result) {
-            setText((result as any).text);
-          }
+      <div className="flex justify-center">
+        <QrReader
+          onResult={(result, error) => {
+            if (!!result) {
+              setText((result as any).text);
+            }
 
-          if (!!error) {
-            console.log(error);
-            // setError(error as any);
-          }
-        }}
-        constraints={{ facingMode: "environment" }}
-        scanDelay={500}
-        className="border border-white"
-      />
+            if (!!error) {
+              console.log(error);
+              // setError(error as any);
+            }
+          }}
+          constraints={{ facingMode: "environment" }}
+          scanDelay={500}
+          className="border"
+          containerStyle={{width:"256px"}}
+        />
 
+        
+      </div>
       <h1>{text}</h1>
-      <h1>{error}</h1>
     </div>
   );
 }
