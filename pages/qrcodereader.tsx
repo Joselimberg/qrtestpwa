@@ -25,6 +25,7 @@ export default function QRCodeReader() {
       />
 
       <h1>{text}</h1>
+      <h1>{error}</h1>
     </div>
   );
 }
