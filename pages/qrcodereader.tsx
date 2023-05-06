@@ -17,7 +17,7 @@ export default function QRCodeReader() {
             console.info(error);
           }
         }}
-        constraints={{ facingMode: "user" }}
+        constraints={{ facingMode: "environment" }}
         scanDelay={700}
         containerStyle={{ with: "100%" }}
       />
