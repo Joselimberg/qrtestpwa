@@ -23,7 +23,8 @@ export default function QRCodeReader() {
           constraints={{ facingMode: "environment" }}
           scanDelay={500}
           className="border"
-          containerStyle={{width:"256px"}}
+          containerStyle={{width:"256px", heigth:"256px"}}
+          videoStyle={{width:"256px", heigth:"256px"}}
         />
 
         
