@@ -15,8 +15,8 @@ export default function QRCodeReader() {
           }
 
           if (!!error) {
-            console.info(error);
-            setError(error as any);
+            console.log(error);
+            // setError(error as any);
           }
         }}
         constraints={{ facingMode: "environment" }}
