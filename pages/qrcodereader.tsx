@@ -3,11 +3,10 @@ import { QrReader } from "react-qr-reader";
 import { QRLayout } from "../components/layouts/QRLayout";
 import { useRouter } from "next/router";
 
+
 export default function QRCodeReader() {
-  interface Coords {
-    lat: number;
-    lng: number;
-  }
+
+  
 
   interface Register {
     link: string;
@@ -16,35 +15,12 @@ export default function QRCodeReader() {
   }
   
   const router = useRouter();
+  const { lat, lng } = router.query;
+
+  const latn = Number(lat)
+  const lngn = Number(lng)
   const [text, setText] = useState("Escaneando...");
   const [showButtonR, setShowButtonR] = useState(false);
-  
-
-  const [coords, setCoords] = useState<Coords | null>(null);
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setCoords({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-  }, []);
-
-  function almacenarRegistro(registro: Register) {
-    const registrosJSON = localStorage.getItem("registros");
-    const registros: Register[] = registrosJSON ? JSON.parse(registrosJSON) : [];
-    registros.push(registro);
-    localStorage.setItem("registros", JSON.stringify(registros));
-  }
-  
 
   return (
     <QRLayout pageDescription="Lector QR" title="Lector QR">
@@ -53,17 +29,25 @@ export default function QRCodeReader() {
         <div className="flex justify-center">
           <QrReader
             onResult={(result, error) => {
-              if (result !== null && coords?.lat && coords?.lng) {
-                const link = (result as any).text;
-                const lat = coords.lat;
-                const lng = coords.lng;
-                const registro: Register = { link, lat, lng };
-                almacenarRegistro(registro);
-                setText(link);
+              if (!!result) {
+                setText((result as any).text);
                 setShowButtonR(true);
-              } else {
-                console.error("Error al leer el código QR o las coordenadas no están disponibles.");
-                // Mostrar un mensaje de error o hacer otra acción.
+                
+                if(localStorage.getItem('register') === null){
+                  console.log("no existe");
+                  console.log(localStorage.getItem('register'));
+                  const register: Register[] = []
+                  const reg: Register = {link:text, lat:latn, lng:lngn}
+                  register.push(reg);
+                  localStorage.setItem('register', JSON.stringify(register));
+                } else {
+                  console.log("existe");
+                  console.log(localStorage.getItem('register'));
+                  const register: Register[] = JSON.parse(localStorage.getItem('register')!)
+                  const reg: Register = {link:text, lat:latn, lng:lngn}
+                  register.push(reg);
+                  localStorage.setItem('register', JSON.stringify(register));
+                }
               }
 
               if (!!error) {
@@ -72,7 +56,7 @@ export default function QRCodeReader() {
               }
             }}
             constraints={{ facingMode: "environment" }}
-            scanDelay={500}
+            scanDelay={1000}
             className="border"
             containerStyle={{ width: "256px", heigth: "256px" }}
             videoStyle={{ width: "256px", heigth: "256px" }}

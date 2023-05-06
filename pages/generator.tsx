@@ -264,13 +264,16 @@ export default function GeneratorPage() {
           </button>
         </div>
         <button
-            className=" bg-green-600 hover:bg-green-700 text-white font-bold mt-5 py-2 px-4 rounded"
-            onClick={() => {
-              router.push("./qrcodereader");
-            }}
-          >
-            Lector de QR
-          </button>
+          className=" bg-green-600 hover:bg-green-700 text-white font-bold mt-5 py-2 px-4 rounded"
+          onClick={() => {
+            router.push({
+              pathname: "./qrcodereader",
+              query: { lat: coords?.lat, lng: coords?.lng },
+            });
+          }}
+        >
+          Lector de QR
+        </button>
       </div>
       <div className="flex flex-col items-center h-50 mt-1">
         <label className="text-2xl pb-3 mt-2">Deja un mensaje</label>
