@@ -2,7 +2,8 @@ import { useState } from "react";
 import { QrReader } from "react-qr-reader";
 
 export default function QRCodeReader() {
-  const [text, setText] = useState("");
+  const [text, setText] = useState("Resultado");
+  const [error, setError] = useState("Error");
 
   return (
     <div>
@@ -15,11 +16,12 @@ export default function QRCodeReader() {
 
           if (!!error) {
             console.info(error);
+            setError(error as any);
           }
         }}
         constraints={{ facingMode: "environment" }}
-        scanDelay={700}
-        containerStyle={{ with: "100%" }}
+        scanDelay={500}
+        className="border border-white"
       />
 
       <h1>{text}</h1>
