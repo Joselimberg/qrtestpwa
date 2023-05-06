@@ -21,7 +21,7 @@ const history = () => {
 
   return (
     <QRLayout pageDescription="Historial de escaner" title="Historial">
-      <div className="mx-20">
+      <div className="mx-10">
         <h1>Mis registros</h1>
         <ul className="list-disc">
           {registros.map((registro, index) => (
