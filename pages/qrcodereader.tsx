@@ -38,6 +38,14 @@ export default function QRCodeReader() {
     }
   }, []);
 
+  function almacenarRegistro(registro: Register) {
+    const registrosJSON = localStorage.getItem("registros");
+    const registros: Register[] = registrosJSON ? JSON.parse(registrosJSON) : [];
+    registros.push(registro);
+    localStorage.setItem("registros", JSON.stringify(registros));
+  }
+  
+
   return (
     <QRLayout pageDescription="Lector QR" title="Lector QR">
       <div>
@@ -45,25 +53,17 @@ export default function QRCodeReader() {
         <div className="flex justify-center">
           <QrReader
             onResult={(result, error) => {
-              if (!!result) {
-                setText((result as any).text);
+              if (result !== null && coords?.lat && coords?.lng) {
+                const link = (result as any).text;
+                const lat = coords.lat;
+                const lng = coords.lng;
+                const registro: Register = { link, lat, lng };
+                almacenarRegistro(registro);
+                setText(link);
                 setShowButtonR(true);
-                
-                if(localStorage.getItem('register') === null){
-                  console.log("no existe");
-                  console.log(localStorage.getItem('register'));
-                  const register: Register[] = []
-                  const reg: Register = {link:text, lat:coords?.lat!, lng:coords?.lng!}
-                  register.push(reg);
-                  localStorage.setItem('register', JSON.stringify(register));
-                } else {
-                  console.log("existe");
-                  console.log(localStorage.getItem('register'));
-                  const register: Register[] = JSON.parse(localStorage.getItem('register')!)
-                  const reg: Register = {link:text, lat:coords?.lat!, lng:coords?.lng!}
-                  register.push(reg);
-                  localStorage.setItem('register', JSON.stringify(register));
-                }
+              } else {
+                console.error("Error al leer el código QR o las coordenadas no están disponibles.");
+                // Mostrar un mensaje de error o hacer otra acción.
               }
 
               if (!!error) {
