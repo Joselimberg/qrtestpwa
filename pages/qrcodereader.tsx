@@ -37,9 +37,7 @@ export default function QRCodeReader() {
             videoId="qrvideo"
           />
         </div>
-        <div className="flex justify-center">
-          <h1 className="text-2xl">{text}</h1>
-        </div>
+        <h1 className="text-xl text-center">{text}</h1>
         <div className="flex justify-center">
           <button 
           className={` bg-sky-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded ${showButtonR ? 'block' : 'hidden'}`}
