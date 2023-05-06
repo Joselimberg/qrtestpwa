@@ -20,23 +20,28 @@ export default function QRCodeReader() {
 
   useEffect(() => {
     if (localStorage.getItem("register") === null) {
-      console.log("no existe");
-      console.log(localStorage.getItem("register"));
-      const register: Register[] = [];
-      const reg: Register = { link: text, lat: latn, lng: lngn };
-      register.push(reg);
-      localStorage.setItem("register", JSON.stringify(register));
+      if (text !== "Escaneando...") {
+        console.log("no existe");
+        console.log(localStorage.getItem("register"));
+        const register: Register[] = [];
+        const reg: Register = { link: text, lat: latn, lng: lngn };
+        register.push(reg);
+        localStorage.setItem("register", JSON.stringify(register));
+      }
     } else {
-      console.log("existe");
-      console.log(localStorage.getItem("register"));
-      const register: Register[] = JSON.parse(
-        localStorage.getItem("register")!
-      );
-      const reg: Register = { link: text, lat: latn, lng: lngn };
-      register.push(reg);
-      localStorage.setItem("register", JSON.stringify(register));
+      if (text !== "Escaneando...") {
+        console.log("existe");
+        console.log(localStorage.getItem("register"));
+        const register: Register[] = JSON.parse(
+          localStorage.getItem("register")!
+        );
+        const reg: Register = { link: text, lat: latn, lng: lngn };
+        register.push(reg);
+        localStorage.setItem("register", JSON.stringify(register));
+      }
     }
-  }, [text]);
+  }, [text])
+  
 
   return (
     <QRLayout pageDescription="Lector QR" title="Lector QR">
