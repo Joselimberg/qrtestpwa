@@ -18,6 +18,26 @@ export default function QRCodeReader() {
   const [text, setText] = useState("Escaneando...");
   const [showButtonR, setShowButtonR] = useState(false);
 
+  useEffect(() => {
+    if (localStorage.getItem("register") === null) {
+      console.log("no existe");
+      console.log(localStorage.getItem("register"));
+      const register: Register[] = [];
+      const reg: Register = { link: text, lat: latn, lng: lngn };
+      register.push(reg);
+      localStorage.setItem("register", JSON.stringify(register));
+    } else {
+      console.log("existe");
+      console.log(localStorage.getItem("register"));
+      const register: Register[] = JSON.parse(
+        localStorage.getItem("register")!
+      );
+      const reg: Register = { link: text, lat: latn, lng: lngn };
+      register.push(reg);
+      localStorage.setItem("register", JSON.stringify(register));
+    }
+  }, [text]);
+
   return (
     <QRLayout pageDescription="Lector QR" title="Lector QR">
       <div>
@@ -28,28 +48,6 @@ export default function QRCodeReader() {
               if (!!result) {
                 setText((result as any).text);
                 setShowButtonR(true);
-
-                if (localStorage.getItem("register") === null) {
-                  if (text !== "Escaneando...") {
-                    console.log("no existe");
-                    console.log(localStorage.getItem("register"));
-                    const register: Register[] = [];
-                    const reg: Register = { link: text, lat: latn, lng: lngn };
-                    register.push(reg);
-                    localStorage.setItem("register", JSON.stringify(register));
-                  }
-                } else {
-                  if (text !== "Escaneando...") {
-                    console.log("existe");
-                    console.log(localStorage.getItem("register"));
-                    const register: Register[] = JSON.parse(
-                      localStorage.getItem("register")!
-                    );
-                    const reg: Register = { link: text, lat: latn, lng: lngn };
-                    register.push(reg);
-                    localStorage.setItem("register", JSON.stringify(register));
-                  }
-                }
               }
 
               if (!!error) {
