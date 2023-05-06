@@ -17,9 +17,7 @@ export default function QRCodeReader() {
             onResult={(result, error) => {
               if (!!result) {
                 setText((result as any).text);
-                if (text !== "Escaneando...") {
-                  setShowButtonR(true);
-                }
+                setShowButtonR(true);
               }
 
               if (!!error) {
