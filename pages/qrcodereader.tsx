@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { QrReader } from "react-qr-reader";
+import { QRLayout } from "../components/layouts/QRLayout";
 
 export default function QRCodeReader() {
-  const [text, setText] = useState("Resultado");
-  const [error, setError] = useState("Error");
+  const [text, setText] = useState("Escaneando...");
 
   return (
-    <div>
-      <h1>Lector de QR</h1>
+    <QRLayout pageDescription="Lector QR" title="Lector QR">
+      <div>
+      <h1 className="text-5xl text-center">Lector de QR</h1>
       <div className="flex justify-center">
         <QrReader
           onResult={(result, error) => {
@@ -35,7 +36,10 @@ export default function QRCodeReader() {
 
         
       </div>
-      <h1>{text}</h1>
+      <div className="flex justify-center"><h1 className="text-2xl">{text}</h1></div>
+      
     </div>
+    </QRLayout>
+    
   );
 }
