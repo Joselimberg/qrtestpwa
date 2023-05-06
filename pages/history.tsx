@@ -11,7 +11,7 @@ const history = () => {
   const [registros, setRegistros] = useState<Register[]>([]);
 
   useEffect(() => {
-    const registrosJSON = localStorage.getItem("registros");
+    const registrosJSON = localStorage.getItem("register");
     if (registrosJSON) {
       const registros: Register[] = JSON.parse(registrosJSON);
       setRegistros(registros);
