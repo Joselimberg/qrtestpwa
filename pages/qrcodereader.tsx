@@ -25,6 +25,8 @@ export default function QRCodeReader() {
           className="border"
           containerStyle={{width:"256px", heigth:"256px"}}
           videoStyle={{width:"256px", heigth:"256px"}}
+          videoContainerStyle={{width:"256px", heigth:"256px"}}
+
         />
 
         
