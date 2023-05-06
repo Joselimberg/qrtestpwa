@@ -3,22 +3,18 @@ import { QrReader } from "react-qr-reader";
 import { QRLayout } from "../components/layouts/QRLayout";
 import { useRouter } from "next/router";
 
-
 export default function QRCodeReader() {
-
-  
-
   interface Register {
     link: string;
     lat: number;
     lng: number;
   }
-  
+
   const router = useRouter();
   const { lat, lng } = router.query;
 
-  const latn = Number(lat)
-  const lngn = Number(lng)
+  const latn = Number(lat);
+  const lngn = Number(lng);
   const [text, setText] = useState("Escaneando...");
   const [showButtonR, setShowButtonR] = useState(false);
 
@@ -32,21 +28,27 @@ export default function QRCodeReader() {
               if (!!result) {
                 setText((result as any).text);
                 setShowButtonR(true);
-                
-                if(localStorage.getItem('register') === null && text !== "Escaneando..."){
-                  console.log("no existe");
-                  console.log(localStorage.getItem('register'));
-                  const register: Register[] = []
-                  const reg: Register = {link:text, lat:latn, lng:lngn}
-                  register.push(reg);
-                  localStorage.setItem('register', JSON.stringify(register));
+
+                if (localStorage.getItem("register") === null) {
+                  if (text !== "Escaneando...") {
+                    console.log("no existe");
+                    console.log(localStorage.getItem("register"));
+                    const register: Register[] = [];
+                    const reg: Register = { link: text, lat: latn, lng: lngn };
+                    register.push(reg);
+                    localStorage.setItem("register", JSON.stringify(register));
+                  }
                 } else {
-                  console.log("existe");
-                  console.log(localStorage.getItem('register'));
-                  const register: Register[] = JSON.parse(localStorage.getItem('register')!)
-                  const reg: Register = {link:text, lat:latn, lng:lngn}
-                  register.push(reg);
-                  localStorage.setItem('register', JSON.stringify(register));
+                  if (text !== "Escaneando...") {
+                    console.log("existe");
+                    console.log(localStorage.getItem("register"));
+                    const register: Register[] = JSON.parse(
+                      localStorage.getItem("register")!
+                    );
+                    const reg: Register = { link: text, lat: latn, lng: lngn };
+                    register.push(reg);
+                    localStorage.setItem("register", JSON.stringify(register));
+                  }
                 }
               }
 
@@ -69,22 +71,27 @@ export default function QRCodeReader() {
         </div>
         <h1 className="text-xl text-center">{text}</h1>
         <div className="flex justify-center">
-          <button 
-          className={` bg-sky-700 hover:bg-blue-900 text-white font-bold py-2 px-4 mb-3 rounded ${showButtonR ? 'block' : 'hidden'}`}
+          <button
+            className={` bg-sky-700 hover:bg-blue-900 text-white font-bold py-2 px-4 mb-3 rounded ${
+              showButtonR ? "block" : "hidden"
+            }`}
             onClick={() => {
               router.push(text);
             }}
-          >Ir al enlace</button>
+          >
+            Ir al enlace
+          </button>
         </div>
         <div className="flex justify-center">
-          <button 
-          className={` bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded`}
+          <button
+            className={` bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded`}
             onClick={() => {
               router.push("./history");
             }}
-          >Ir al historial</button>
+          >
+            Ir al historial
+          </button>
         </div>
-        
       </div>
     </QRLayout>
   );
