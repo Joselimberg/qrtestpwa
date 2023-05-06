@@ -50,11 +50,13 @@ export default function QRCodeReader() {
                 setShowButtonR(true);
                 
                 if(localStorage.getItem('register') === null){
+                  console.log(localStorage.getItem('register'));
                   const register: Register[] = []
                   const reg: Register = {link:text, lat:coords?.lat!, lng:coords?.lng!}
                   register.push(reg);
                   localStorage.setItem('register', JSON.stringify(register));
                 } else {
+                  console.log(localStorage.getItem('register'));
                   const register: Register[] = JSON.parse(localStorage.getItem('register')!)
                   const reg: Register = {link:text, lat:coords?.lat!, lng:coords?.lng!}
                   register.push(reg);
