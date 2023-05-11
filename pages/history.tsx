@@ -23,6 +23,14 @@ const history = () => {
     <QRLayout pageDescription="Historial de escaner" title="Historial">
       <div className="mx-10">
         <h1>Mis registros</h1>
+        <button
+            className={` bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded`}
+            onClick={() => {
+              localStorage.removeItem('register');
+            }}
+          >
+            Borrar historial
+          </button>
         <ul className="list-disc">
           {registros.map((registro, index) => (
             <li key={index} className="">
