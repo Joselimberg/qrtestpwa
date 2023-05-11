@@ -10,6 +10,11 @@ export default function QRCodeReader() {
     lng: number;
   }
 
+  interface Coords {
+    lat: number;
+    lng: number;
+  }
+
   const router = useRouter();
   const { lat, lng } = router.query;
 
@@ -18,13 +23,23 @@ export default function QRCodeReader() {
   const [text, setText] = useState("Escaneando...");
   const [showButtonR, setShowButtonR] = useState(false);
 
+  const [coords, setCoords] = useState<Coords | null>(null);
+  
   useEffect(() => {
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      setCoords({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
+    })
+
     if (localStorage.getItem("register") === null) {
       if (text !== "Escaneando...") {
         console.log("no existe");
         console.log(localStorage.getItem("register"));
         const register: Register[] = [];
-        const reg: Register = { link: text, lat: latn, lng: lngn };
+        const reg: Register = { link: text, lat: coords?.lat!, lng: coords?.lng! };
         register.push(reg);
         localStorage.setItem("register", JSON.stringify(register));
       }
@@ -35,12 +50,14 @@ export default function QRCodeReader() {
         const register: Register[] = JSON.parse(
           localStorage.getItem("register")!
         );
-        const reg: Register = { link: text, lat: latn, lng: lngn };
+        const reg: Register = { link: text, lat: coords?.lat!, lng: coords?.lng! };
         register.push(reg);
         localStorage.setItem("register", JSON.stringify(register));
       }
     }
   }, [text])
+
+  console.log(coords);
   
 
   return (
